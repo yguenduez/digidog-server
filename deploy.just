@@ -98,9 +98,7 @@ deploy_all:
 stop_all:
     just stop {{NAME}}
     just stop nginx
-    just stop {{GAME_SERVER_NAME}}
 
 start_all:
     just start {{NAME}}
     just start nginx
-    just start {{GAME_SERVER_NAME}}
