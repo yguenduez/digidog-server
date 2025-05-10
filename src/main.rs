@@ -7,7 +7,7 @@ use axum::{
     routing::get,
     Router,
 };
-use std::{env, io, net::SocketAddr, path::PathBuf, sync::Arc};
+use std::{env, path::PathBuf, sync::Arc};
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
 
