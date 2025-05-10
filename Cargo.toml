@@ -1,11 +1,14 @@
 [package]
-name = "jar-download-server"
+name = "digidog-server"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 axum = { version = "0.8.4", features = ["http2"] }
 tokio = { version = "1", features = ["full"] }
-tower-http = { version = "0.5", features = ["fs"] }
 askama = "0.14.0"
 dotenvy = "0.15.7"
+
+tower-http = { version = "0.5", features = ["fs","trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"]}

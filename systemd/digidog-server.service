@@ -1,0 +1,12 @@
+[Unit]
+Description=Digidog Serving Server
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=/root/digidog-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

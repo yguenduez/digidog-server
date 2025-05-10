@@ -1,0 +1,2 @@
+# Use the official Rust image with Debian as the base
+FROM rust:1.85-slim-bullseye
