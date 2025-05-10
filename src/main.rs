@@ -3,7 +3,7 @@ use axum::response::IntoResponse;
 use axum::{
     extract::State,
     http::{header, StatusCode},
-    response::Response,
+    response::{Response, Html},
     routing::get,
     Router,
 };
@@ -65,11 +65,10 @@ async fn main() {
 
 // Handler for the index page
 async fn index_handler(State(config): State<Arc<AppConfig>>) -> impl IntoResponse {
-    Index {
+    Html(Index {
         jar_filename: config.jar_filename.clone(),
     }
-    .render()
-    .unwrap()
+    .render().unwrap())
 }
 
 // Handler for file downloads
