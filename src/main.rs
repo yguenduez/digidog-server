@@ -18,12 +18,14 @@ use tracing::info;
 struct AppConfig {
     jar_directory: PathBuf,
     jar_filename: String,
+    digidog_readme: String,
 }
 
 #[derive(Template)]
 #[template(path = "index.html")]
 struct Index {
     jar_filename: String,
+    content: String,
 }
 
 #[tokio::main]
@@ -46,10 +48,13 @@ async fn main() {
     info!("JAR directory: {}", jar_directory);
     let jar_filename = env::var("JAR_FILENAME").unwrap_or_else(|_| "application.jar".to_string());
     info!("JAR filename: {}", jar_filename);
+    let digidog_readme_path = env::var("DIGIDOG_README").unwrap_or_else(|_| "README.md".to_string());
+    let digidog_readme_content = markdown::to_html(tokio::fs::read_to_string(digidog_readme_path).await.unwrap().as_str());
 
     let config = Arc::new(AppConfig {
         jar_directory: PathBuf::from(jar_directory),
         jar_filename,
+        digidog_readme: digidog_readme_content,
     });
 
     let app = Router::new()
@@ -67,6 +72,7 @@ async fn main() {
 async fn index_handler(State(config): State<Arc<AppConfig>>) -> impl IntoResponse {
     Html(Index {
         jar_filename: config.jar_filename.clone(),
+        content: config.digidog_readme.clone(),
     }
     .render().unwrap())
 }
