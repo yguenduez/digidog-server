@@ -6,6 +6,7 @@ set dotenv-load
 USERNAME := env_var_or_default("DEPLOY_USERNAME", "hans")
 DOMAIN := env_var_or_default("DEPLOY_DOMAIN", "digidog.rust-basel.ch")
 NAME := env_var_or_default("DEPLOY_NAME", "digidog-server")
+GAME_SERVER_NAME := env_var_or_default("DEPLOY_NAME", "digidog-game-server")
 LETS_ENCRYPT_DOMAN:= env_var_or_default("LETSENCRYPT_DOMAIN", "digidog.rust-basel.ch")
 ARTIFACT_PATH:=env_var_or_default("ARTIFACT_PATH", "target/digidog-0.0.1-ALPHA.jar")
 VIDEO_PATH:=env_var_or_default("VIDEO_PATH", "video.mp4")
@@ -53,6 +54,7 @@ update_letsencrypt:
     just remote "sudo certbot renew"
 
 setup_nginx:
+    just copy_remote "nginx/nginx.conf" "/etc/nginx/nginx.conf"
     just copy_remote "nginx/default.conf" "/etc/nginx/sites-available/default"
     just remote "sudo rm /etc/nginx/sites-enabled/default 2>/dev/null"
     just remote "sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/"
@@ -70,11 +72,15 @@ deploy_dist:
     just copy_remote "digi.md" "~/digi.md"
     just copy_remote "{{VIDEO_PATH}}" "~/$(basename {{VIDEO_PATH}})"
 
-setup_systemd:
-    just copy_remote "systemd/{{NAME}}.service" "/etc/systemd/system/{{NAME}}.service"
+systemd name:
+    just copy_remote "systemd/{{name}}.service" "/etc/systemd/system/{{name}}.service"
     just remote "sudo systemctl daemon-reload"
-    just remote "sudo systemctl enable {{NAME}}"
-    just remote "sudo systemctl start {{NAME}}"
+    just remote "sudo systemctl enable {{name}}"
+    just remote "sudo systemctl start {{name}}"
+
+setup_systemd:
+   just systemd {{NAME}}
+   just systemd {{GAME_SERVER_NAME}}
 
 remote_copy_env:
     just copy_remote ".env" "~/.env"
@@ -92,7 +98,9 @@ deploy_all:
 stop_all:
     just stop {{NAME}}
     just stop nginx
+    just stop {{GAME_SERVER_NAME}}
 
 start_all:
     just start {{NAME}}
     just start nginx
+    just start {{GAME_SERVER_NAME}}
