@@ -66,6 +66,7 @@ deploy_server:
 deploy_dist:
     just remote "mkdir -p jars"
     just copy_remote "{{ARTIFACT_PATH}}" "~/jars/$(basename {{ARTIFACT_PATH}})"
+    just copy_remote "digi.md" "~/digi.md"
 
 setup_systemd:
     just copy_remote "systemd/{{NAME}}.service" "/etc/systemd/system/{{NAME}}.service"
