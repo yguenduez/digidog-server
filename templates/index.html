@@ -6,34 +6,74 @@
     <title>JAR File Download</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
         }
 
         h1 {
-            color: #333;
+            color: #334155;
+            font-size: 2.2rem;
+            margin: 0;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+        }
+
+        h2 {
+            color: #334155;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin: 15px 0;
         }
 
         .download-btn {
             display: inline-block;
-            background-color: #4CAF50;
+            background-color: #3b82f6;
             color: white;
-            padding: 12px 20px;
+            padding: 12px 24px;
             margin: 20px 0;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         .download-btn:hover {
-            background-color: #45a049;
+            background-color: #2563eb;
+            transform: translateY(-2px);
         }
-        /* Minimal Markdown styling */
+
+        /* Minimal Markdown styling - kept as requested */
         .markdown-content {
             font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
             line-height: 1.5;
@@ -43,7 +83,6 @@
             padding: 10px;
             text-align: left;
         }
-
         /* Headings */
         .markdown-content h1, .markdown-content h2 {
             margin-top: 1.5em;
@@ -51,21 +90,17 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 0.2em;
         }
-
         .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
             margin-top: 1.2em;
             margin-bottom: 0.5em;
         }
-
         /* Paragraphs and lists */
         .markdown-content p, .markdown-content ul, .markdown-content ol {
             margin-bottom: 1em;
         }
-
         .markdown-content ul, .markdown-content ol {
             padding-left: 2em;
         }
-
         /* Code blocks */
         .markdown-content code {
             font-family: "SFMono-Regular", Consolas, monospace;
@@ -74,42 +109,35 @@
             border-radius: 3px;
             font-size: 0.9em;
         }
-
         .markdown-content pre {
             background-color: #f6f8fa;
             padding: 10px;
             border-radius: 3px;
             overflow-x: auto;
         }
-
         .markdown-content pre code {
             padding: 0;
             background-color: transparent;
         }
-
         /* Links */
         .markdown-content a {
             color: #0366d6;
             text-decoration: none;
         }
-
         .markdown-content a:hover {
             text-decoration: underline;
         }
-
         /* Tables */
         .markdown-content table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 1em;
         }
-
         .markdown-content table th, .markdown-content table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-
         /* Blockquotes */
         .markdown-content blockquote {
             border-left: 4px solid #ddd;
@@ -121,12 +149,13 @@
 </head>
 <body>
 <header>
+    <img class="logo-img" src="/static/logo.png" alt="DigiDog Logo" />
     <h1>DigiDog</h1>
 </header>
 <main>
-    <div class="How it looks like">
+    <div class="video-demo">
         <h2>Video Demo</h2>
-        <video width="100%" controls>
+        <video controls>
             <source src="/video" type="video/mp4">
             Your browser does not support the video tag.
         </video>

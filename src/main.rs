@@ -1,3 +1,4 @@
+use tower_http::services::ServeDir;
 use askama::Template;
 use axum::response::IntoResponse;
 use axum::{
@@ -68,6 +69,7 @@ async fn main() {
         .route("/", get(index_handler))
         .route("/download/{filename}", get(download_handler))
         .route("/video", get(serve_video))
+        .nest_service("/static", ServeDir::new("static"))
         .with_state(config);
 
     // Start the server
