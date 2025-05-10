@@ -26,7 +26,7 @@ struct IndexTemplate {
 
 #[tokio::main]
 async fn main() {
-    // Configuration
+    dotenvy::dotenv().ok();
     let jar_directory = env::var("JAR_DIRECTORY").unwrap_or_else(|_| "./jars".to_string());
     let jar_filename = env::var("JAR_FILENAME").unwrap_or_else(|_| "application.jar".to_string());
 
