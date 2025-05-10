@@ -16,7 +16,7 @@ ssh:
 create_image:
     podman build -t build_image -f dockerfiles/Containerfile .
 
-build name:
+build:
     podman run --rm -v $(pwd):/project \
     -w /project \
     build_image:latest \
@@ -61,7 +61,7 @@ copy_remote source_host dest_remote:
     rsync -avz -e "ssh -i ~/.ssh/{{ NAME }}" {{ source_host }} {{ USERNAME }}@{{ DOMAIN }}:{{ dest_remote }}
 
 deploy_server:
-    just build webserver
+    just build
     just copy_remote "target/aarch64-unknown-linux-gnu/release/{{NAME}}" "~/{{NAME}}"
 
 deploy_dist:
