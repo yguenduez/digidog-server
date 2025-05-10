@@ -8,8 +8,11 @@ use axum::{
     Router,
 };
 use std::{env, path::PathBuf, sync::Arc};
+use axum::body::Body;
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
+use tokio::io::BufReader;
+use tokio_util::io::ReaderStream;
 
 use tracing_subscriber::prelude::*;
 use tracing::info;
@@ -17,6 +20,7 @@ use tracing::info;
 // Configuration for the application
 struct AppConfig {
     jar_directory: PathBuf,
+    video_file: PathBuf,
     jar_filename: String,
     digidog_readme: String,
 }
@@ -51,8 +55,11 @@ async fn main() {
     let digidog_readme_path = env::var("DIGIDOG_README").unwrap_or_else(|_| "README.md".to_string());
     let digidog_readme_content = markdown::to_html(tokio::fs::read_to_string(digidog_readme_path).await.unwrap().as_str());
 
+    let video_path = env::var("VIDEO_PATH").unwrap_or_else(|_| "video.mp4".to_string());
+
     let config = Arc::new(AppConfig {
         jar_directory: PathBuf::from(jar_directory),
+        video_file: PathBuf::from(video_path),
         jar_filename,
         digidog_readme: digidog_readme_content,
     });
@@ -60,6 +67,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(index_handler))
         .route("/download/{filename}", get(download_handler))
+        .route("/video", get(serve_video))
         .with_state(config);
 
     // Start the server
@@ -75,6 +83,29 @@ async fn index_handler(State(config): State<Arc<AppConfig>>) -> impl IntoRespons
         content: config.digidog_readme.clone(),
     }
     .render().unwrap())
+}
+
+async fn serve_video(State(config): State<Arc<AppConfig>>) -> impl IntoResponse {
+    // Open the file
+    let file =  File::open(&config.video_file).await.unwrap();
+    let metadata = tokio::fs::metadata(&config.video_file).await.unwrap();
+
+    // Create a buffered reader
+    let reader = BufReader::new(file);
+
+    // Convert the reader into a stream
+    let stream = ReaderStream::new(reader);
+
+    // Convert the stream into a StreamBody
+    let body = Body::from_stream(stream);
+
+    // Create a response with appropriate headers
+    Response::builder()
+        .status(StatusCode::OK)
+        .header(header::CONTENT_TYPE, "video/mp4")
+        .header(header::CONTENT_LENGTH, metadata.len())
+        .body(body)
+        .unwrap()
 }
 
 // Handler for file downloads

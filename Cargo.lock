@@ -185,6 +185,7 @@ dependencies = [
  "dotenvy",
  "markdown",
  "tokio",
+ "tokio-util",
  "tracing",
  "tracing-subscriber",
 ]

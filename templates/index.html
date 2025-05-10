@@ -121,10 +121,17 @@
 </head>
 <body>
 <header>
-    <h1>JAR File Download</h1>
+    <h1>DigiDog</h1>
 </header>
 <main>
-    <p>Click the button below to download the JAR file:</p>
+    <div class="How it looks like">
+        <h2>Video Demo</h2>
+        <video width="100%" controls>
+            <source src="/video" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p>Click the button below to download the JAR file of the game:</p>
     <a href="/download/{{ jar_filename }}" class="download-btn">Download JAR</a>
     <section class="markdown-content">
         {{ content | safe }}

@@ -8,6 +8,7 @@ DOMAIN := env_var_or_default("DEPLOY_DOMAIN", "digidog.rust-basel.ch")
 NAME := env_var_or_default("DEPLOY_NAME", "digidog-server")
 LETS_ENCRYPT_DOMAN:= env_var_or_default("LETSENCRYPT_DOMAIN", "digidog.rust-basel.ch")
 ARTIFACT_PATH:=env_var_or_default("ARTIFACT_PATH", "target/digidog-0.0.1-ALPHA.jar")
+VIDEO_PATH:=env_var_or_default("VIDEO_PATH", "video.mp4")
 
 ssh:
     ssh -i ~/.ssh/{{ NAME }} {{ USERNAME }}@{{ DOMAIN }}
@@ -67,6 +68,7 @@ deploy_dist:
     just remote "mkdir -p jars"
     just copy_remote "{{ARTIFACT_PATH}}" "~/jars/$(basename {{ARTIFACT_PATH}})"
     just copy_remote "digi.md" "~/digi.md"
+    just copy_remote "{{VIDEO_PATH}}" "~/$(basename {{VIDEO_PATH}})"
 
 setup_systemd:
     just copy_remote "systemd/{{NAME}}.service" "/etc/systemd/system/{{NAME}}.service"
