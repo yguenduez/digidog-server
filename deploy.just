@@ -71,6 +71,8 @@ deploy_dist:
     just copy_remote "{{ARTIFACT_PATH}}" "~/jars/$(basename {{ARTIFACT_PATH}})"
     just copy_remote "digi.md" "~/digi.md"
     just copy_remote "{{VIDEO_PATH}}" "~/$(basename {{VIDEO_PATH}})"
+    just remote "mkdir -p static"
+    just copy_remote "static/logo.png" "~/static/logo.png"
 
 systemd name:
     just copy_remote "systemd/{{name}}.service" "/etc/systemd/system/{{name}}.service"
