@@ -37,7 +37,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(index_handler))
-        .route("/download/:filename", get(download_handler))
+        .route("/download/{filename}", get(download_handler))
         .with_state(config);
 
     // Start the server
