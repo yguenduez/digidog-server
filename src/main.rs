@@ -3,7 +3,7 @@ use axum::response::IntoResponse;
 use axum::{
     extract::State,
     http::{header, StatusCode},
-    response::Response,
+    response::{Response, Html},
     routing::get,
     Router,
 };
@@ -11,24 +11,41 @@ use std::{env, path::PathBuf, sync::Arc};
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
 
+use tracing_subscriber::prelude::*;
+use tracing::info;
+
 // Configuration for the application
 struct AppConfig {
     jar_directory: PathBuf,
     jar_filename: String,
 }
 
-// Template for the index page
 #[derive(Template)]
 #[template(path = "index.html")]
-struct IndexTemplate {
+struct Index {
     jar_filename: String,
 }
 
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
+                format!(
+                    "{}=debug,tower_http=debug,axum::rejection=trace",
+                    env!("CARGO_CRATE_NAME")
+                )
+                    .into()
+            }),
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
+
     let jar_directory = env::var("JAR_DIRECTORY").unwrap_or_else(|_| "./jars".to_string());
+    info!("JAR directory: {}", jar_directory);
     let jar_filename = env::var("JAR_FILENAME").unwrap_or_else(|_| "application.jar".to_string());
+    info!("JAR filename: {}", jar_filename);
 
     let config = Arc::new(AppConfig {
         jar_directory: PathBuf::from(jar_directory),
@@ -41,17 +58,17 @@ async fn main() {
         .with_state(config);
 
     // Start the server
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    info!("Starting server on http://127.0.0.1:3000");
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 
 // Handler for the index page
 async fn index_handler(State(config): State<Arc<AppConfig>>) -> impl IntoResponse {
-    IndexTemplate {
+    Html(Index {
         jar_filename: config.jar_filename.clone(),
     }
-    .render()
-    .unwrap()
+    .render().unwrap())
 }
 
 // Handler for file downloads
