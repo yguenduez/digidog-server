@@ -1,5 +1,3 @@
-# DigiDog Readme
-
 ## Game Overview
 DigiDog is a digital version of the Swiss board game "Dog". It's a team-based game similar to "Eile mit Weile" but with more tactical elements through card play.
 
@@ -21,6 +19,9 @@ DigiDog is a digital version of the Swiss board game "Dog". It's a team-based ga
 
 ### Special Rules
 - Players can only start a piece with an Ace, King, or Joker.
+- Players can distribute moves with a Seven. 
+- The Seven cards burn all pieces on its trail (moving them back to the start).
+- Players can go reverse with a Four.
 - When two pieces land on the same field, the second piece sends the first one back to start.
 - Players must use every card they play, even if it's disadvantageous.
 - To enter the goal area, a piece must have passed its starting position at least twice.
