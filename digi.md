@@ -28,15 +28,41 @@ DigiDog is a digital version of the Swiss board game "Dog". It's a team-based ga
 
 ## Setup and Running
 
-Download the jar file
+### Prerequisites
+
+ - You will need Java Runtime Version >= 21. For example, [Temurin](https://adoptium.net/de/temurin/releases/).
+ - The jar file. See the download button above.
 
 ### Starting the Server
+
+This will autopick an ip address in your network:
 
 ```sh
 java -jar digidog-0.0.1-ALPHA.jar server <PORT>
 ```
 
+Or: This will let you choose the ip address
+
+```sh
+java -jar digidog-0.0.1-ALPHA.jar server <IP>:<PORT>
+```
+
+Example:
+
+```sh
+java -jar digidog-0.0.1-ALPHA.jar server 127.0.0.1:8080
+```
+
 ### Starting the Client
+
+It will connect to the server running on <PORT> at <IP> address.
+
 ```sh
 java -jar digidog-0.0.1-ALPHA.jar client <IP>:<PORT>
+```
+
+Example:
+
+```sh
+java -jar digidog-0.0.1-ALPHA.jar client 127.0.0.1:8080
 ```
